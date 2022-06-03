@@ -39,3 +39,7 @@ npm run test:unit
 ```sh
 npm run lint
 ```
+
+### Figma's link
+
+https://www.figma.com/file/Fd5vzFw1r68lddmUiOVJGt/QUICHE-TOURNAMENT?node-id=0%3A1

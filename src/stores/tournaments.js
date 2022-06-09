@@ -31,6 +31,24 @@ export const useTournaments = defineStore("tournaments", () => {
 
   /* Tournament */
 
+  // region Tournament
+  function create(players) {
+    const tournament = {
+      id: state.list.length,
+      players: [],
+      actualRound: 0,
+      rounds: [],
+      round(id) {
+        return tournament.rounds[id];
+      },
+    };
+
+    state.list.push(tournament);
+    state.list[tournament.id].players = players;
+
+    return state.list[tournament.id];
+  }
+
   function createRound(tournamentId) {
     const round = {
       id: state.get(tournamentId).rounds.length,

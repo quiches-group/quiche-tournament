@@ -3,51 +3,27 @@ import { reactive } from "vue";
 
 export const useMatchmaking = defineStore("matchmaking", () => {
   const state = reactive({
-    players: [
-      {
-        id: 1,
-        name: "Player 1",
-      },
-      {
-        id: 2,
-        name: "Player 2",
-      },
-      {
-        id: 3,
-        name: "Player 3",
-      },
-      {
-        id: 4,
-        name: "Player 4",
-      },
-      {
-        id: 5,
-        name: "Player 5",
-      },
-      {
-        id: 6,
-        name: "Player 6",
-      },
-      {
-        id: 7,
-        name: "Player 7",
-      },
-      {
-        id: 8,
-        name: "Player 8",
-      },
-    ],
+    players: [],
     playersRemaining: [],
-    battles: [],
+    rounds: [],
+    actualRound: [],
+    actualBattle: {},
+  });
+
+  const round = reactive({
+    list: [],
+    new() {},
+    next() {},
   });
 
   function setWinner(player) {
     state.playersRemaining.push(player);
+    console.log(state.rounds);
   }
 
-  function createBattle(round, ...playersList) {
-    state.battles[round].push({
-      id: state.battles.length + 1,
+  function createBattle(...playersList) {
+    state.rounds[state.actualRound].push({
+      id: state.rounds[state.actualRound].length + 1,
       players: playersList,
     });
   }
@@ -59,23 +35,37 @@ export const useMatchmaking = defineStore("matchmaking", () => {
     return player;
   }
 
-  function create(playersList = undefined) {
-    if (playersList) {
-      state.players = playersList;
-    }
+  function create(playersList) {
+    if (!playersList && playersList.length < 2)
+      throw new Error("At least two players or teams needed.");
+    state.players = playersList;
     state.playersRemaining = state.players;
 
-    const round = state.battles.length;
-    state.battles[round] = [];
+    state.actualRound = state.rounds.length;
+    state.rounds[state.actualRound] = [];
 
     while (state.playersRemaining.length > 1) {
-      createBattle(round, randomChoice(), randomChoice());
+      createBattle(randomChoice(), randomChoice());
     }
 
     console.log(state.playersRemaining);
   }
 
-  const { battles, players } = state;
+  const { rounds, players } = state;
 
-  return { create, setWinner, battles, players };
+  return { create, setWinner, rounds, players };
 });
+
+/*
+const isPowerOfTwo = (x) => Math.log2(x) % 1 === 0;
+
+const nextPowerOfTwo = (x) => {
+  if (x < 2) throw new Error("set a number that is more than one");
+  let powerOfTwo = 2;
+  while (powerOfTwo <= x) {
+    powerOfTwo *= 2;
+  }
+  return powerOfTwo;
+};
+const beforePowerOfTwo = (x) => nextPowerOfTwo(x) / 2;
+*/

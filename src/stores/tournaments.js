@@ -60,10 +60,9 @@ export const useTournaments = defineStore("tournaments", () => {
     };
 
     state.get(tournamentId).round(roundId).battles.push(battle);
+
     state.list[tournamentId].rounds[roundId].battles[battle.id].players =
       players;
-
-    console.log(state.list[tournamentId].rounds[roundId].battles);
 
     return state.list[tournamentId].rounds[roundId].battles[battle.id];
   }
@@ -76,30 +75,39 @@ export const useTournaments = defineStore("tournaments", () => {
     const round = state.get(tournamentId).round(roundId);
 
     const { players } = round;
+
+    let next;
+    let difference;
+    let nbPlayersInRound;
+
     if (Math.log2(players.length) % 1 !== 0) {
       const nextPowerOfTwo = (x) => (Math.log2(x) % 1 !== 0 ? x : x + 1);
-      const next = nextPowerOfTwo(players.length);
+      next = nextPowerOfTwo(players.length);
 
-      const difference = next - players.length;
-      const nbPlayersInRound = players.length - difference;
-      const playersTmp = [];
-      playersTmp.push(...players);
-      for (let i = 0; i < Math.floor(nbPlayersInRound / 2); i += 1) {
-        const playersInBattle = [];
-        for (let j = 0; j < 2; j += 1) {
-          const choice = Math.floor(Math.random() * playersTmp.length);
-          playersInBattle.push(playersTmp[choice]);
-          playersTmp.splice(choice, 1);
-        }
+      difference = next - players.length;
+      nbPlayersInRound = players.length - difference;
+    } else {
+      nbPlayersInRound = players.length;
+    }
 
-        createBattle(tournamentId, roundId, playersInBattle);
+    const playersTmp = [];
+    playersTmp.push(...players);
+    for (let i = 0; i < Math.floor(nbPlayersInRound / 2); i += 1) {
+      const playersInBattle = [];
+      for (let j = 0; j < 2; j += 1) {
+        const choice = Math.floor(Math.random() * playersTmp.length);
+        playersInBattle.push(playersTmp[choice]);
+        playersTmp.splice(choice, 1);
       }
+
+      createBattle(tournamentId, roundId, playersInBattle);
+    }
+
+    if (playersTmp.length > 0) {
       const nextRound =
         state.get(tournamentId).round(roundId + 1) ?? createRound(tournamentId);
       nextRound.players.push(...playersTmp);
     }
-
-    round.battles = [];
   }
 
   // endregion

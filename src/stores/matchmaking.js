@@ -1,6 +1,4 @@
-import { defineStore } from "pinia";
-import { reactive } from "vue";
-
+/*
 export const useMatchmaking = defineStore("matchmaking", () => {
   const state = reactive({
     players: [],
@@ -55,6 +53,7 @@ export const useMatchmaking = defineStore("matchmaking", () => {
 
   return { create, setWinner, rounds, players };
 });
+*/
 
 /*
 const isPowerOfTwo = (x) => Math.log2(x) % 1 === 0;

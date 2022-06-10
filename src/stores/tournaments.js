@@ -4,62 +4,114 @@ import { reactive } from "vue";
 export const useTournaments = defineStore("tournaments", () => {
   const state = reactive({
     list: [],
+    get(id) {
+      return state.list[id];
+    },
   });
 
+  // region Tournament
   function create(players) {
     const tournament = {
       id: state.list.length,
-      players,
+      players: [],
       actualRound: 0,
-      round: [],
+      rounds: [],
+      round(id) {
+        return tournament.rounds[id];
+      },
     };
 
     state.list.push(tournament);
-    return tournament;
+    state.list[tournament.id].players = players;
+
+    return state.list[tournament.id];
   }
 
   function createRound(tournamentId) {
     const round = {
-      id: state.list[tournamentId].length,
+      id: state.get(tournamentId).rounds.length,
       players: [],
       battles: [],
+      battle(id) {
+        return round.battles[id];
+      },
     };
 
-    function nextPowerOfTwo(x) {
-      return Math.log2(x) % 1 === 0 ? x : nextPowerOfTwo(x + 1);
-    }
+    state.get(tournamentId).rounds.push(round);
+    if (round.id === 0)
+      state.list[tournamentId].rounds[round.id].players =
+        state.get(tournamentId).players;
 
-    if (round.id === 0) {
-      round.players = state.list[tournamentId].players;
-
-      if (Math.log2(round.players.length) % 1 !== 0) {
-        const powerOfTwo = nextPowerOfTwo(round.players.length);
-        const difference = powerOfTwo - round.players.length;
-
-        for (let i = 0; i < difference; i += 1) {
-          const test = round.players[Math.random() * i];
-        }
-      }
-    }
-
-    state.list[tournamentId].round.push(round);
-    return round;
+    return state.list[tournamentId].rounds[round.id];
   }
 
-  function createBattle(tournamentId, roundId, ...players) {
+  function createBattle(tournamentId, roundId, players) {
     const battle = {
-      id: state.list[tournamentId].round[roundId].battles.length,
-      players,
+      id: state.get(tournamentId).round(roundId).battles.length,
+      players: [],
       winner: null,
+      win(playerId) {
+        battle.winner = playerId;
+        const nextRound =
+          state.get(tournamentId).round(roundId + 1) ??
+          createRound(tournamentId);
+        nextRound.players.push(state.get(tournamentId).players[playerId]);
+      },
     };
 
-    state.list[tournamentId].round[roundId].battles.push(battle);
-    return battle;
+    state.get(tournamentId).round(roundId).battles.push(battle);
+    state.list[tournamentId].rounds[roundId].battles[battle.id].players =
+      players;
+
+    console.log(state.list[tournamentId].rounds[roundId].battles);
+
+    return state.list[tournamentId].rounds[roundId].battles[battle.id];
   }
 
-  function winBattle() {}
+  // endregion
 
-  const { list } = state;
+  // region Matchmaking
 
-  return { list, create, createRound, createBattle, winBattle };
+  function roundMatchmaking(tournamentId, roundId) {
+    const round = state.get(tournamentId).round(roundId);
+
+    const { players } = round;
+    if (Math.log2(players.length) % 1 !== 0) {
+      const nextPowerOfTwo = (x) => (Math.log2(x) % 1 !== 0 ? x : x + 1);
+      const next = nextPowerOfTwo(players.length);
+
+      const difference = next - players.length;
+      const nbPlayersInRound = players.length - difference;
+      const playersTmp = [];
+      playersTmp.push(...players);
+      for (let i = 0; i < Math.floor(nbPlayersInRound / 2); i += 1) {
+        const playersInBattle = [];
+        for (let j = 0; j < 2; j += 1) {
+          const choice = Math.floor(Math.random() * playersTmp.length);
+          playersInBattle.push(playersTmp[choice]);
+          playersTmp.splice(choice, 1);
+        }
+
+        createBattle(tournamentId, roundId, playersInBattle);
+      }
+      const nextRound =
+        state.get(tournamentId).round(roundId + 1) ?? createRound(tournamentId);
+      nextRound.players.push(...playersTmp);
+    }
+
+    round.battles = [];
+  }
+
+  // endregion
+
+  const { get, list } = state;
+
+  return {
+    list,
+    create,
+    get,
+    createRound,
+    createBattle,
+    roundMatchmaking,
+  };
 });

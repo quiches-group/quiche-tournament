@@ -137,9 +137,12 @@ export const useTournaments = defineStore("tournaments", () => {
         Math.log2(x) % 1 === 0 ? x : nextPowerOfTwo(x + 1);
       const next = nextPowerOfTwo(players.length);
 
+  // region Matchmaking
       // Get the difference between the number of players and the next power of 2
       const difference = next - players.length;
 
+  function roundMatchmaking(tournamentId, roundId) {
+    const round = state.get(tournamentId).round(roundId);
       // Get the number of players in the actual round to have a power of 2 the next round
       nbPlayersInRound = players.length - difference;
     } else {
@@ -147,6 +150,7 @@ export const useTournaments = defineStore("tournaments", () => {
       nbPlayersInRound = players.length;
     }
 
+    const { players } = round;
     // Set a temp var for the players
     const playersTmp = [];
     playersTmp.push(...players);

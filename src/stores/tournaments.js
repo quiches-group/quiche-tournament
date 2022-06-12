@@ -7,11 +7,11 @@ import { ref, reactive, computed } from "vue";
 // - [ ] TODO: Make the battle of the loser of the semi final to set the 4th and 3rd player
 // - [ ] TODO: Set the 1st, 2nd, 3rd and 4th players in a list (array or object)
 
-// TODO:
-// TODO:
-// TODO:
-// TODO:
-// TODO:
+// TODO: Make tournaments.create(players) the only function to create a tournament, a round and a matchmaking
+// TODO: Make that the last win of a round launch a new round and matchmaking
+// TODO: Check if there's only two players and if it is don't create a new round
+// TODO: Make the battle of the loser of the semi final to set the 4th and 3rd player
+// TODO: Set the 1st, 2nd, 3rd and 4th players in a list (array or object)
 
 export const useTournaments = defineStore("tournaments", () => {
   /* State */

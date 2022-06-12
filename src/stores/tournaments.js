@@ -7,6 +7,12 @@ import { ref, reactive, computed } from "vue";
 // - [ ] TODO: Make the battle of the loser of the semi final to set the 4th and 3rd player
 // - [ ] TODO: Set the 1st, 2nd, 3rd and 4th players in a list (array or object)
 
+// TODO:
+// TODO:
+// TODO:
+// TODO:
+// TODO:
+
 export const useTournaments = defineStore("tournaments", () => {
   /* State */
 
@@ -144,6 +150,17 @@ export const useTournaments = defineStore("tournaments", () => {
   function roundMatchmaking(tournamentId, roundId) {
     const round = state.get(tournamentId).round(roundId);
       // Get the number of players in the actual round to have a power of 2 the next round
+
+    const { players } = round;
+
+    let nbPlayersInRound;
+
+    if (Math.log2(players.length) % 1 !== 0) {
+      const nextPowerOfTwo = (x) =>
+        Math.log2(x) % 1 === 0 ? x : nextPowerOfTwo(x + 1);
+      const next = nextPowerOfTwo(players.length);
+
+      const difference = next - players.length;
       nbPlayersInRound = players.length - difference;
     } else {
       // If the number of players is a power of two let the actual number of players be the number of players in the round

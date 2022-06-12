@@ -1,6 +1,12 @@
 import { defineStore } from "pinia";
 import { reactive } from "vue";
 
+// TODO:
+// TODO:
+// TODO:
+// TODO:
+// TODO:
+
 export const useTournaments = defineStore("tournaments", () => {
   const state = reactive({
     list: [],
@@ -76,15 +82,14 @@ export const useTournaments = defineStore("tournaments", () => {
 
     const { players } = round;
 
-    let next;
-    let difference;
     let nbPlayersInRound;
 
     if (Math.log2(players.length) % 1 !== 0) {
-      const nextPowerOfTwo = (x) => (Math.log2(x) % 1 !== 0 ? x : x + 1);
-      next = nextPowerOfTwo(players.length);
+      const nextPowerOfTwo = (x) =>
+        Math.log2(x) % 1 === 0 ? x : nextPowerOfTwo(x + 1);
+      const next = nextPowerOfTwo(players.length);
 
-      difference = next - players.length;
+      const difference = next - players.length;
       nbPlayersInRound = players.length - difference;
     } else {
       nbPlayersInRound = players.length;
@@ -104,6 +109,9 @@ export const useTournaments = defineStore("tournaments", () => {
     }
 
     if (playersTmp.length > 0) {
+      round.players = round.players.filter(
+        (player) => !playersTmp.includes(player)
+      );
       const nextRound =
         state.get(tournamentId).round(roundId + 1) ?? createRound(tournamentId);
       nextRound.players.push(...playersTmp);

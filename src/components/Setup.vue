@@ -1,26 +1,55 @@
 <template>
-  <!--
-  <q-input placeholder="nom" v-model="player1"></q-input>
--->
-  <div class="flex justify-center">
-    <q-dropdown
-      placeholder="Nombre de joueur"
-      :options="possibleNumberPlayer"
-      @select="selectNumberOfPlayer"
-    ></q-dropdown>
-  </div>
-  <div class="flex justify-center">
-    <ul>
-      <li class="w-20" v-for="player in playerList" :key="player.id">
-        <label>Joueur {{ player.id }}</label>
-        <q-input placeholder="Prénom" v-model="player.name"></q-input>
-      </li>
-    </ul>
+  <div>
+    <div class="centered">
+      <q-dropdown
+        accentColor="red"
+        placeholder="Nombre de joueur"
+        :options="possibleNumberPlayer"
+        @select="selectNumberOfPlayer"
+      ></q-dropdown>
+    </div>
+
+    <q-row justify="start gap-x-40 gap-y-20 pt-20 px-20">
+      <q-col
+        :cols="12"
+        :sm="6"
+        :md="4"
+        :lg="3"
+        :xl="2"
+        v-for="player in playerList"
+        :key="player.id"
+      >
+        <q-card id="card" class="card group will-change-transform">
+          <q-card-content>
+            <div class="fields-group">
+              <q-input
+                id="input"
+                class="input text-lg font-bold"
+                :class="{
+                  'border-b-green-500': player.name !== '',
+                  'border-b-red-500': player.name === '',
+                }"
+                backgroundColor="transparent"
+                placeholder="Prénom"
+                v-model="player.name"
+              ></q-input>
+              <label class="pl-3 label">Joueur {{ player.id }}</label>
+            </div>
+          </q-card-content>
+        </q-card>
+      </q-col>
+    </q-row>
+
+    <div class="centered">
+    <q-button v-if="playersWereSetted" variant="plain-rounded" size="large">
+        Créer le tournoi
+      </q-button>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
 const possibleNumberPlayer = ["2", "3", "4", "5", "6", "7", "8"];
 
@@ -36,12 +65,49 @@ const selectNumberOfPlayer = (numberOfPlayer) => {
       playerList.value.push(newPlayer);
     } else if (numberOfPlayer < playerList.value.length) {
       const playersToRemove = playerList.value.length - numberOfPlayer;
-      for (let i = 0; i < playersToRemove; i += 1) {
+      for (let index = 0; index < playersToRemove; index += 1) {
         playerList.value.pop();
       }
     }
   }
 };
+
+const playersWereSetted = computed(() => {
+  return playerList.value.length !== 0;
+});
 </script>
 
-<style scoped></style>
+<style scoped>
+.centered {
+  @apply
+  flex justify-center pt-10;
+}
+
+.card {
+  @apply bg-opacity-20
+  transform hover:scale-125 transition
+  hover:shadow-2xl;
+}
+
+.label {
+  @apply font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-blue-900;
+}
+
+.input {
+  @apply bg-opacity-20
+  border-b-2 caret-green-600 text-white;
+}
+
+.fields-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.fields-group label {
+  order: 1;
+}
+
+.fields-group .input {
+  order: 2;
+}
+</style>

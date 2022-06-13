@@ -3,5 +3,7 @@ import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <template>
-  <RouterView />
+  <div class="min-h-screen bg-gradient-to-tr from-quiche-purple to-quiche-red overflow-hidden">
+    <RouterView />
+  </div>
 </template>

@@ -1,18 +1,21 @@
 <template>
   <div>
-    <q-row justify="start gap-x-40 gap-y-20 pt-20 px-20">
+    <q-row
+        class="row"
+        justify="space-around">
       <q-col
-        :cols="12"
-        :sm="6"
-        :md="4"
-        :lg="3"
-        :xl="2"
+          class="col"
+          :cols="12"
+          :sm="6"
+          :md="3"
+          :lg="3"
+          :xl="3"
         v-for="player in playerList"
         :key="player.id"
       >
         <q-card id="card" class="card group will-change-transform">
           <q-card-content>
-            <div class="fields-group">
+            <div class="fields-group w-full">
               <q-input
                 id="input"
                 class="input text-lg font-bold"
@@ -75,11 +78,12 @@ function createTournament() {
 .card {
   @apply bg-opacity-20
   transform hover:scale-125 transition
-  hover:shadow-2xl;
+  hover:shadow-2xl
+  w-full;
 }
 
 .label {
-  @apply font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-blue-900;
+  @apply font-extrabold text-white;
 }
 
 .input {
@@ -99,4 +103,27 @@ function createTournament() {
 .fields-group .input {
   order: 2;
 }
+
+.row {
+  margin: 0;
+}
+
+.col {
+  @apply py-3
+  lg:px-3
+  sm:px-2;
+}
+
+@media (min-width: 1024px) {
+  .row {
+    max-width: 55vw;
+  }
+}
+
+@media (min-width: 1280px) {
+  .row {
+    max-width: 45vw;
+  }
+}
+
 </style>

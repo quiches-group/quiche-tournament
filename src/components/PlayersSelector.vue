@@ -1,5 +1,6 @@
 <template>
   <div class="centered">
+    <p class="text-xl text-white pb-2">Choisis le nombre de joueur :</p>
     <q-dropdown
       accentColor="red"
       placeholder="Nombre de joueur"
@@ -41,6 +42,6 @@ const selectNumberOfPlayer = (numberOfPlayer) => {
 
 <style scoped>
 .centered {
-  @apply flex justify-center pt-10;
+  @apply flex flex-col justify-center pt-10;
 }
 </style>

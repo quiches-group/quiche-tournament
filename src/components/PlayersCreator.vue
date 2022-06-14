@@ -1,14 +1,5 @@
 <template>
   <div>
-    <div class="centered">
-      <q-dropdown
-        accentColor="red"
-        placeholder="Nombre de joueur"
-        :options="possibleNumberPlayer"
-        @select="selectNumberOfPlayer"
-      ></q-dropdown>
-    </div>
-
     <q-row justify="start gap-x-40 gap-y-20 pt-20 px-20">
       <q-col
         :cols="12"
@@ -49,29 +40,14 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { computed } from "vue";
 import { useTournaments } from "@/stores/tournaments.js";
 
 const tournament = useTournaments();
-const possibleNumberPlayer = ["2", "3", "4", "5", "6", "7", "8"];
-const playerList = ref([]);
 
-const selectNumberOfPlayer = (numberOfPlayer) => {
-  for (let i = 1; i <= numberOfPlayer; i += 1) {
-    if (playerList.value[i - 1] === undefined) {
-      const newPlayer = {
-        id: i,
-        name: "",
-      };
-      playerList.value.push(newPlayer);
-    } else if (numberOfPlayer < playerList.value.length) {
-      const playersToRemove = playerList.value.length - numberOfPlayer;
-      for (let index = 0; index < playersToRemove; index += 1) {
-        playerList.value.pop();
-      }
-    }
-  }
-};
+const playerList = computed(() => {
+  return tournament.playerList;
+});
 
 const playersWereSetted = computed(() => {
   const arePlayersSetted = playerList.value.map((player) => {
@@ -85,8 +61,8 @@ const playersWereSetted = computed(() => {
 });
 
 function createTournament() {
-  const tournoi = tournament.create(playerList.value);
-  console.log(tournoi);
+  const newTournament = tournament.create();
+  console.log(newTournament);
 }
 </script>
 

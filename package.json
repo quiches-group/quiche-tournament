@@ -10,7 +10,7 @@
   "dependencies": {
     "@vue/eslint-config-prettier": "^7.0.0",
     "pinia": "^2.0.14",
-    "quichtify": "^1.15.3",
+    "quichtify": "^1.15.4",
     "vue": "^3.2.36",
     "vue-router": "^4.0.15"
   },

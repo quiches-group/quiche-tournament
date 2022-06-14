@@ -41,7 +41,7 @@
     </q-row>
 
     <div class="centered">
-    <q-button v-if="playersWereSetted" variant="plain-rounded" size="large">
+    <q-button v-if="playersWereSetted" variant="plain-rounded" size="large" @click="createTournament">
         Créer le tournoi
       </q-button>
     </div>
@@ -50,9 +50,10 @@
 
 <script setup>
 import { ref, computed } from "vue";
+import { useTournaments } from "@/stores/tournaments.js";
 
+const tournament = useTournaments();
 const possibleNumberPlayer = ["2", "3", "4", "5", "6", "7", "8"];
-
 const playerList = ref([]);
 
 const selectNumberOfPlayer = (numberOfPlayer) => {
@@ -73,8 +74,20 @@ const selectNumberOfPlayer = (numberOfPlayer) => {
 };
 
 const playersWereSetted = computed(() => {
-  return playerList.value.length !== 0;
+  const arePlayersSetted = playerList.value.map((player) => {
+    return player.name !== "";
+  });
+
+  if (playerList.value.length !== 0) {
+    return !arePlayersSetted.includes(false);
+  }
+  return false;
 });
+
+function createTournament() {
+  const tournoi = tournament.create(playerList.value);
+  console.log(tournoi);
+}
 </script>
 
 <style scoped>

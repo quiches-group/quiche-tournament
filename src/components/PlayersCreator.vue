@@ -58,11 +58,14 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { computed } from "vue";
+import { useRouter } from "vue-router";
 import { useTournaments } from "@/stores/tournaments.js";
 
 const tournament = useTournaments();
+const router = useRouter();
 const isGettingRandomName = ref(false);
+
 const playerList = computed(() => {
   return tournament.playerList;
 });
@@ -80,6 +83,9 @@ const playersWereSetted = computed(() => {
 
 function createTournament() {
   tournament.create();
+  router.push({
+    name: "tournament",
+  });
 }
 
 async function getUsers() {

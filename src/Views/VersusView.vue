@@ -5,13 +5,9 @@
       <q-card-content>{{ user.victory }}</q-card-content>
     </q-card>
   </div>
-  <div class="imgContainer">
-    <img src="../assets/logo.png" alt="" />
-  </div>
 </template>
 
 <script setup>
-
 import { ref } from "vue";
 
 const users = ref([

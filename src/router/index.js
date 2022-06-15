@@ -1,15 +1,21 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import VersusView from '../views/VersusView.vue'
+import { createRouter, createWebHistory } from "vue-router";
+import HomeView from "../views/HomeView.vue";
+import VersusView from "../views/VersusView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
-      name: 'home',
-      component: VersusView
-    }
-  ]
-})
+      path: "/",
+      name: "home",
+      component: HomeView,
+    },
+    {
+      path: "/tournament",
+      name: "tournament",
+      component: VersusView,
+    },
+  ],
+});
 
-export default router
+export default router;

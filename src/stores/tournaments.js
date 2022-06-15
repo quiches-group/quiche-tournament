@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { reactive } from "vue";
+import { ref, reactive, computed } from "vue";
 
 // - [x] TODO: Make tournaments.create(players) the only function to create a tournament, a round and a matchmaking
 // - [x] TODO: Make that the last win of a round launch a new round and matchmaking
@@ -8,12 +8,28 @@ import { reactive } from "vue";
 // - [ ] TODO: Set the 1st, 2nd, 3rd and 4th players in a list (array or object)
 
 export const useTournaments = defineStore("tournaments", () => {
+  /* State */
+
   const state = reactive({
     list: [],
     get(id) {
       return state.list[id];
     },
   });
+
+  /* Player of new tournament */
+
+  const playerList = ref([]);
+
+  function addNewPlayer(newPlayer) {
+    playerList.value.push(newPlayer);
+  }
+
+  function popPlayer() {
+    playerList.value.pop();
+  }
+
+  /* Tournament */
 
   function createRound(tournamentId) {
     const round = {
@@ -147,7 +163,7 @@ export const useTournaments = defineStore("tournaments", () => {
     }
   }
 
-  function create(players) {
+  function create() {
     const tournament = {
       id: state.list.length,
       players: [],
@@ -159,7 +175,7 @@ export const useTournaments = defineStore("tournaments", () => {
     };
 
     state.list.push(tournament);
-    state.list[tournament.id].players = players;
+    state.list[tournament.id].players = playerList.value;
 
     if (state.list[tournament.id].rounds.length === 0) {
       const round = createRound(tournament.id);
@@ -172,6 +188,9 @@ export const useTournaments = defineStore("tournaments", () => {
   const { get, list } = state;
 
   return {
+    playerList,
+    addNewPlayer,
+    popPlayer,
     list,
     create,
     get,

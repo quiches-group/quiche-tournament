@@ -1,7 +1,12 @@
 module.exports = {
-  content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
+  content: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        "quiche-purple": "#541690",
+        "quiche-red": "#FF4949",
+      },
+    },
   },
   plugins: [],
-}
+};

@@ -3,14 +3,13 @@
     <q-card
       class="playerCard"
       :class="{
-        'border-4': winner.name === players[0].name,
-        'border-b-green-500': winner.name === players[0].name,
-        'border-solid': winner.name === players[0].name,
+        'border-4': winner.name === props.players[0].name,
+        'border-solid': winner.name === props.players[0].name,
       }"
-      @click="choose(players[0])"
+      @click="choose(props.players[0])"
     >
-      <q-card-title>{{ players[0].name }}</q-card-title>
-      <q-card-content>{{ players[0].victory }}</q-card-content>
+      <q-card-title>{{ props.players[0].name }}</q-card-title>
+      <q-card-content>{{ props.players[0].victory }}</q-card-content>
       <span></span>
     </q-card>
 
@@ -19,32 +18,29 @@
     <q-card
       class="playerCard"
       :class="{
-        'border-4': winner.name === players[1].name,
-        'border-b-green-500': winner.name === players[1].name,
-        'border-solid': winner.name === players[0].name,
+        'border-4': winner.name === props.players[1].name,
+        'border-solid': winner.name === props.players[0].name,
       }"
-      @click="choose(players[1])"
+      @click="choose(props.players[1])"
     >
-      <q-card-title>{{ players[1].name }}</q-card-title>
-      <q-card-content>{{ players[1].victory }}</q-card-content>
+      <q-card-title>{{ props.players[1].name }}</q-card-title>
+      <q-card-content>{{ props.players[1].victory }}</q-card-content>
       <span></span>
     </q-card>
   </div>
 </template>
 
 <script setup>
-import { reactive, ref } from "vue";
+import { reactive } from "vue";
 
-const players = ref([
-  {
-    name: "Nicolas",
-    victory: "3 victory",
+const props = defineProps({
+  players: {
+    type: Array,
+    default: () => [],
   },
-  {
-    name: "Hugo",
-    victory: "1 Victory",
-  },
-]);
+});
+
+const emit = defineEmits(["winner"]);
 
 const winner = reactive({
   name: "",
@@ -52,22 +48,27 @@ const winner = reactive({
 });
 
 const choose = (player) => {
-  if (winner !== player) {
+  if (winner.name !== player.name) {
     winner.name = player.name;
     winner.victory = player.victory;
+  } else {
+    winner.name = "";
+    winner.victory = "";
   }
+
+  emit("winner", winner);
 };
 </script>
 
 <style scoped>
 .round {
-  @apply flex flex-row flex-wrap justify-around items-center h-screen w-screen;
+  @apply flex flex-row flex-wrap justify-around items-center;
 }
 .playerCard {
   @apply flex flex-col justify-around items-center
   transform hover:scale-125 transition
   hover:shadow-2xl
-  transform hover:border-2 border-green-500 border-dashed
+  transform hover:border-2 border-green-500 border-solid
   bg-opacity-20;
 }
 

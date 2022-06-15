@@ -1,37 +1,68 @@
 <template>
-  <roundVersus></roundVersus>
+  <div class="match">
+    <div class="tournamentInfo">
+      <p class="tournamentStep">Quart de finale</p>
+      <p class="roundStep">1/4</p>
+    </div>
+    <roundVersus :players="players" @winner="setWinner"></roundVersus>
+    <div class="centered">
+      <q-button
+        v-show="winner.name !== ''"
+        variant="plain-rounded"
+        size="large"
+      >
+        Match suivant
+      </q-button>
+    </div>
+  </div>
 </template>
 
 <script setup>
-import RoundVersus from '../components/RoundVersus.vue';
-import { ref } from "vue";
+import { ref, reactive } from "vue";
+import RoundVersus from "../components/RoundVersus.vue";
 
-const users = ref([
+const players = ref([
   {
-    firstName: "Nicolas",
+    name: "Nicolas",
     victory: "3 victory",
   },
   {
-    firstName: "Hugo",
+    name: "Hugo",
     victory: "1 Victory",
   },
 ]);
+
+const winner = reactive({
+  name: "",
+  victory: "",
+});
+
+const setWinner = (newWinner) => {
+  winner.name = newWinner.name;
+  winner.victory = newWinner.victory;
+};
 </script>
 
 <style scoped>
-.cardContainer {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  position: absolute;
-  transform: translateY(-25%);
+.match {
+  @apply h-screen flex flex-col justify-evenly py-32;
 }
 
-.imgContainer {
-  display: flex;
-  justify-content: center;
-  margin-top: 25%;
-  transform: translateY(-25%);
+.tournamentInfo {
+  @apply flex flex-col justify-center content-center;
+}
+
+.tournamentStep {
+  @apply text-center text-white text-5xl font-semibold
+  underline underline-offset-2 decoration-quiche-purple/50 decoration-4;
+}
+
+.roundStep {
+  @apply text-center text-white text-2xl
+  py-5;
+}
+
+.centered {
+  @apply flex justify-center;
 }
 </style>

@@ -32,6 +32,15 @@ export const useTournaments = defineStore("tournaments", () => {
   /* Tournament */
 
   // region Tournament
+  function createPlayers(players) {
+    return players.map((player, id) => {
+      return {
+        id,
+        name: player,
+      };
+    });
+  }
+
   function getNextPowerOfTwo(number) {
     return Math.log2(number) % 1 === 0 ? number : getNextPowerOfTwo(number + 1);
   }
@@ -64,53 +73,140 @@ export const useTournaments = defineStore("tournaments", () => {
     };
   }
 
-  function createBattle(tournamentId, battle) {
+  function createBattle(tournamentId, roundId, battle) {
     return {
-      id: state.get(tournamentId).round(state.get(tournamentId).actualRound)
-        .battles.length,
+      id: state.get(tournamentId).round(roundId).battles.length,
       players: battle,
       winner: null,
     };
   }
 
   function createRound(tournamentId) {
+    const tournament = state.get(tournamentId);
+
     const round = {
-      id: state.get(tournamentId).rounds.length ?? 0,
-      players:
-        state.get(tournamentId).rounds.length === 0
-          ? state.get(tournamentId).players
-          : [],
+      id: tournament.rounds.length ?? 0,
+      players: tournament.rounds.length === 0 ? tournament.players : [],
       battles: [],
       battle(id) {
         return round.battles[id];
       },
       win(battleId, playerId) {
-        round.battle(battleId).winner =
-          state.get(tournamentId).players[playerId];
+        // Set winner
+        tournament.rounds[round.id].battles[battleId].winner = playerId;
+
+        // Get or create nextRound
         const nextRound =
-          state.get(tournamentId).round(round.id + 1) ??
+          state.list[tournamentId].rounds[round.id + 1] ??
           createRound(tournamentId);
-        nextRound.players.push(state.get(tournamentId).players[playerId]);
 
-        if (
-          nextRound.players.length ===
-          getNextPowerOfTwo(round.players.length) / 2
-        ) {
-          const { battles, playersTmp } = matchmaking(round.players);
-          battles.forEach((battle) =>
-            round.battles.push(createBattle(tournamentId, battle))
-          );
+        // Set players of next round
+        nextRound.players.push(state.list[tournamentId].players[playerId]);
 
-          const futureRound = createRound(tournamentId);
-          playersTmp.forEach((player) => futureRound.players.push(player));
+        // Check if all winner are set
+        if (round.battles.every((battle) => battle.winner !== null)) {
+          // set the podium
+          if (nextRound.players.length < 2) {
+            // get last round players :
+            state.list[tournamentId].podium.push(
+              state.list[tournamentId].players[round.battles[0].winner]
+            );
+            state.list[tournamentId].podium.push(
+              round.players.filter(
+                (player) => !state.list[tournamentId].podium.includes(player)
+              )
+            );
 
-          round.players = round.players.filter(
-            (player) => !playersTmp.includes(player)
-          );
+            if (state.list[tournamentId].players.length === 3) {
+              state.list[tournamentId].podium.push(
+                ...state.list[tournamentId].players.filter(
+                  (player) => !state.list[tournamentId].podium.includes(player)
+                )
+              );
+              return;
+            }
+            if (state.list[tournamentId].players.length > 3) {
+              return;
+            }
+          }
 
-          state.get(tournamentId).actualRound += 1;
+          if (round.players.length === 2 && nextRound.players.length < 2) {
+            state.list[tournamentId].podium.push(nextRound.players[0]);
+            state.list[tournamentId].podium.push(
+              ...round.players.filter(
+                (player) => !nextRound.players.includes(player)
+              )
+            );
+            // state.list;
+            return;
+          }
+
+          // If it's the semi (4 players in this round)
+          if (round.players.length > 2 && nextRound.players.length === 2) {
+            const losers = round.players.filter(
+              (player) => !nextRound.players.includes(player)
+            );
+
+            // creation de la finale
+            const final =
+              state.list[tournamentId].rounds[round.id + 1] ??
+              createRound(tournamentId);
+
+            // copy the nextRound in the final
+            final.players.push(...nextRound.players);
+
+            // set nextRound players to be the third battle
+            nextRound.players = [];
+            nextRound.players.push(...losers);
+
+            const battles = [[...nextRound.players], [...losers]];
+
+            losers.forEach((loser) => {
+              nextRound.players.push(
+                state.list[tournamentId].players[
+                  state.list[tournamentId].players.findIndex(
+                    (player) => player === loser
+                  )
+                ]
+              );
+            });
+
+            // Create and push each battles in the next round
+            battles.forEach((battle) => {
+              nextRound.battles.push(
+                createBattle(tournamentId, nextRound.id, battle)
+              );
+            });
+
+            // Add one to the round
+            state.list[tournamentId].actualRound += 1;
+
+            return;
+          }
+
+          // Start a matchmaking between players
+          const { battles, playersTmp } = matchmaking(nextRound.players);
+
+          // If playersTmp is not empty
+          if (playersTmp.length > 0) {
+            // Send playersTmp in the second next round
+            const secondNextRound =
+              state.list[tournamentId].rounds[nextRound.id + 1] ??
+              createRound(tournamentId);
+            // Add playersTmp to second next run
+            secondNextRound.players.push(...playersTmp);
+          }
+
+          // Create and push each battles in the next round
+          battles.forEach((battle) => {
+            nextRound.battles.push(
+              createBattle(tournamentId, nextRound.id, battle)
+            );
+          });
+
+          // Add one to the round
+          state.list[tournamentId].actualRound += 1;
         }
-        console.log(state.get(tournamentId));
       },
     };
 
@@ -122,9 +218,10 @@ export const useTournaments = defineStore("tournaments", () => {
     if (!players) throw new Error("We need a list of players");
     const tournament = {
       id: state.list.length,
-      players,
+      players: createPlayers(players),
       actualRound: 0,
       rounds: [],
+      podium: [],
       round(id) {
         return tournament.rounds[id];
       },
@@ -135,7 +232,7 @@ export const useTournaments = defineStore("tournaments", () => {
     const round = createRound(tournament.id);
     const { battles, playersTmp } = matchmaking(round.players);
     battles.forEach((battle) =>
-      round.battles.push(createBattle(tournament.id, battle))
+      round.battles.push(createBattle(tournament.id, round.id, battle))
     );
 
     const nextRound = createRound(tournament.id);

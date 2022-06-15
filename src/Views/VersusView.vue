@@ -1,13 +1,9 @@
 <template>
-  <div class="cardContainer">
-    <q-card class="card" v-for="user in users" :key="user">
-      <q-card-title>{{ user.firstName }}</q-card-title>
-      <q-card-content>{{ user.victory }}</q-card-content>
-    </q-card>
-  </div>
+  <roundVersus></roundVersus>
 </template>
 
 <script setup>
+import RoundVersus from '../components/RoundVersus.vue';
 import { ref } from "vue";
 
 const users = ref([

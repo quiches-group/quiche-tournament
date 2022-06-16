@@ -1,7 +1,7 @@
 <template>
   <div class="tournamentCreator">
     <div class="side left">
-      <img class="logo" src="../assets/vsLogo.png" alt="Versus logo">
+      <img class="logo" src="../assets/vsLogo.png" alt="Versus logo" />
       <player-selector class="selector"></player-selector>
       <span></span>
     </div>

@@ -46,7 +46,7 @@ const playerRanked = computed(() => {
 }
 
 .leaderboard {
-  @apply flex  w-full flex-col flex-wrap items-centermy-16  p-4 rounded-2xl bg-opacity-20 shadow-2xl bg-white
+  @apply flex  w-full flex-col flex-wrap items-center my-16  p-4 rounded-2xl bg-opacity-20 shadow-2xl bg-white
   lg:w-56;
 }
 

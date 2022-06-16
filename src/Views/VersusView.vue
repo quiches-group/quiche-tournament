@@ -53,8 +53,9 @@ const setWinner = (newWinner) => {
 }
 
 .tournamentStep {
-  @apply text-center text-white text-5xl font-semibold
-  underline underline-offset-2 decoration-quiche-purple/50 decoration-4;
+  @apply text-center text-white text-3xl font-semibold
+  underline underline-offset-2 decoration-quiche-purple/50 decoration-4
+  md:text-5xl;
 }
 
 .roundStep {

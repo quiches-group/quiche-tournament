@@ -22,16 +22,25 @@
           </q-card-content>
         </q-card>
       </div>
+      <div class="lg:w-full lg:flex lg:items-center mt-20">
+        <q-button class="homeButton" @click="routeToHome">Home </q-button>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
 import { computed } from "vue";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const playerRanked = computed(() => {
   return { 1: "Player 1", 2: "Player 2", 3: "Player 3", 4: "Player 4" };
 });
+
+const routeToHome = () => {
+  router.push("/");
+};
 </script>
 
 <style scoped>
@@ -40,9 +49,9 @@ const playerRanked = computed(() => {
 }
 
 .container {
-  @apply flex flex-col pt-6 place-content-between items-center w-full
+  @apply flex flex-col pt-6 justify-around items-center w-full
   md:px-8
-  lg:p-20 lg:w-full lg:flex-row;
+  lg:p-20 lg:w-full lg:flex-row lg:flex-wrap;
 }
 
 .leaderboard {
@@ -66,5 +75,9 @@ const playerRanked = computed(() => {
 
 .party {
   @apply max-h-14 w-auto;
+}
+
+.homeButton {
+  @apply lg:flex-1 lg:mx-auto lg:max-w-xs;
 }
 </style>

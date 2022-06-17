@@ -5,25 +5,42 @@
     </div>
     <div class="container">
       <div class="leaderboard">
-        <div v-for="player in playerRanked" :key="player" class="scoreboard">
-          <div class="player">{{ player }}</div>
-          <q-separator></q-separator>
+        <div
+          v-for="(player, index) in playerRanked"
+          :key="player.id"
+          class="scoreboard"
+        >
+          <img
+            class="classementImg"
+            :src="getClassementLogo(imageLeaderboard[index].image)"
+            alt=""
+          />
+          <div class="player">{{ player.name }}</div>
+          <q-separator class="separator"></q-separator>
         </div>
       </div>
       <div class="right">
-        <q-card id="card" class="card will-change-transform">
+        <q-card id="card" class="card">
           <q-card-title> La victoire est pour</q-card-title>
           <q-card-content>
-            <div class="flex flex-row justify-between items-center">
-              <img class="party" src="../assets/party-time.gif" />
-              <h2>{{ playerRanked["1"] }}</h2>
-              <img class="party" src="../assets/party-time.gif" />
+            <div class="winner">
+              <img
+                class="party"
+                src="../assets/party-time.gif"
+                alt="party-time"
+              />
+              <h2>{{ playerRanked[0].name }}</h2>
+              <img
+                class="party"
+                src="../assets/party-time.gif"
+                alt="party-time"
+              />
             </div>
           </q-card-content>
         </q-card>
       </div>
-      <div class="lg:w-full lg:flex lg:items-center mt-20">
-        <q-button class="homeButton" @click="routeToHome">Home </q-button>
+      <div class="endButton">
+        <q-button class="homeButton" @click="routeToHome">Home</q-button>
       </div>
     </div>
   </div>
@@ -35,8 +52,26 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 const playerRanked = computed(() => {
-  return { 1: "Player 1", 2: "Player 2", 3: "Player 3", 4: "Player 4" };
+  return [
+    { id: 1, name: "Player 1" },
+    { id: 2, name: "Player2" },
+    { id: 3, name: "Player3" },
+    { id: 4, name: "Player4" },
+  ];
 });
+
+const imageLeaderboard = computed(() => {
+  return [
+    { image: "../assets/first.png" },
+    { image: "../assets/second.png" },
+    { image: "../assets/third.png" },
+    { image: "../assets/fourth.png" },
+  ];
+});
+
+const getClassementLogo = (path) => {
+  return new URL(path, import.meta.url).href;
+};
 
 const routeToHome = () => {
   router.push("/");
@@ -59,13 +94,21 @@ const routeToHome = () => {
   lg:w-56;
 }
 
+.scoreboard {
+  @apply w-full flex flex-row flex-wrap justify-evenly items-center p-3;
+}
+
+.classementImg {
+  @apply max-h-14;
+}
+
+.separator {
+  @apply w-full;
+}
+
 .right {
   @apply flex  h-28 w-full
   lg:h-full lg:w-56;
-}
-
-.scoreboard {
-  @apply w-full flex flex-col items-center p-3;
 }
 
 .card {
@@ -73,10 +116,17 @@ const routeToHome = () => {
   lg:h-48;
 }
 
+.winner {
+  @apply flex flex-row justify-between items-center;
+}
+
 .party {
   @apply max-h-14 w-auto;
 }
-
+.endButton {
+  @apply mt-20
+  lg:w-full lg:flex lg:items-center;
+}
 .homeButton {
   @apply lg:flex-1 lg:mx-auto lg:max-w-xs;
 }

@@ -11,8 +11,8 @@
 </template>
 
 <script setup>
-import { useTournaments } from "@/stores/tournaments.js";
 import { computed } from "vue";
+import { useTournaments } from "@/stores/tournaments.js";
 
 const tournament = useTournaments();
 

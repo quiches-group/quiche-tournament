@@ -42,6 +42,9 @@
       >
         Noms aléatoires
       </q-button>
+    </div>
+
+    <div class="centered">
       <q-button
         v-if="playersWereSetted"
         variant="plain-rounded"
@@ -95,8 +98,7 @@ async function getUsers() {
 
 <style scoped>
 .centered {
-  @apply flex flex-col flex-wrap justify-center
-  space-y-4
+  @apply flex justify-center
   pt-10;
 }
 

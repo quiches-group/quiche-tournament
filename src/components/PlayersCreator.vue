@@ -1,15 +1,13 @@
 <template>
   <div>
-    <q-row
-        class="row"
-        justify="space-around">
+    <q-row class="row" justify="space-around">
       <q-col
-          class="col"
-          :cols="12"
-          :sm="6"
-          :md="3"
-          :lg="3"
-          :xl="3"
+        class="col"
+        :cols="12"
+        :sm="6"
+        :md="3"
+        :lg="3"
+        :xl="3"
         v-for="player in playerList"
         :key="player.id"
       >
@@ -35,7 +33,21 @@
     </q-row>
 
     <div class="centered">
-    <q-button v-if="playersWereSetted" variant="plain-rounded" size="large" @click="createTournament">
+      <q-button
+        v-if="playerList.length !== 0"
+        :loading="isGettingRandomName"
+        variant="plain-rounded"
+        size="large"
+        @click="getUsers"
+      >
+        Noms aléatoires
+      </q-button>
+      <q-button
+        v-if="playersWereSetted"
+        variant="plain-rounded"
+        size="large"
+        @click="createTournament"
+      >
         Créer le tournoi
       </q-button>
     </div>
@@ -43,11 +55,11 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { ref, computed } from "vue";
 import { useTournaments } from "@/stores/tournaments.js";
 
 const tournament = useTournaments();
-
+const isGettingRandomName = ref(false);
 const playerList = computed(() => {
   return tournament.playerList;
 });
@@ -67,12 +79,25 @@ function createTournament() {
   const newTournament = tournament.create();
   console.log(newTournament);
 }
+
+async function getUsers() {
+  isGettingRandomName.value = true;
+  await Promise.all(
+    playerList.value.map(async (player) => {
+      const res = await fetch("https://randomuser.me/api/");
+      const { results } = await res.json();
+      player.name = results[0].name.first;
+    })
+  );
+  isGettingRandomName.value = false;
+}
 </script>
 
 <style scoped>
 .centered {
-  @apply
-  flex justify-center pt-10;
+  @apply flex flex-col flex-wrap justify-center
+  space-y-4
+  pt-10;
 }
 
 .card {
@@ -125,5 +150,4 @@ function createTournament() {
     max-width: 45vw;
   }
 }
-
 </style>

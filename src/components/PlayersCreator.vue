@@ -79,8 +79,7 @@ const playersWereSetted = computed(() => {
 });
 
 function createTournament() {
-  const newTournament = tournament.create();
-  console.log(newTournament);
+  tournament.create();
 }
 
 async function getUsers() {

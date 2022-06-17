@@ -1,11 +1,5 @@
 import { defineStore } from "pinia";
-import { ref, reactive, computed } from "vue";
-
-// - [x] TODO: Make tournaments.create(players) the only function to create a tournament, a round and a matchmaking
-// - [x] TODO: Make that the last win of a round launch a new round and matchmaking
-// - [x] TODO: Check if there's only two players and if it is don't create a new round
-// - [ ] TODO: Make the battle of the loser of the semi final to set the 4th and 3rd player
-// - [ ] TODO: Set the 1st, 2nd, 3rd and 4th players in a list (array or object)
+import { ref, reactive } from "vue";
 
 export const useTournaments = defineStore("tournaments", () => {
   /* State */
@@ -202,12 +196,12 @@ export const useTournaments = defineStore("tournaments", () => {
     return round;
   }
 
-  function create(players) {
-    if (!players) throw new Error("We need a list of players");
+  function create() {
+    if (!playerList.value) throw new Error("We need a list of players");
     const tournament = {
       id: state.list.length,
-      players: createPlayers(players),
-      numberOfRounds: getNumberOfRounds(players),
+      players: createPlayers(playerList.value),
+      numberOfRounds: getNumberOfRounds(playerList.value),
       actualRound: 0,
       rounds: [],
       podium: [],

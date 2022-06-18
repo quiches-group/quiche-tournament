@@ -1,6 +1,6 @@
 <template>
   <div>
-    <q-row class="row" justify="space-around">
+    <q-row class="row" justify="center">
       <q-col
         class="col"
         :cols="12"

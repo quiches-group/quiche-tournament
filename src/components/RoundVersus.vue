@@ -19,7 +19,7 @@
       class="playerCard"
       :class="{
         'border-4': winner.name === props.players[1].name,
-        'border-solid': winner.name === props.players[0].name,
+        'border-solid': winner.name === props.players[1].name,
       }"
       @click="choose(props.players[1])"
     >
@@ -43,17 +43,20 @@ const props = defineProps({
 const emit = defineEmits(["winner"]);
 
 const winner = reactive({
-  name: "",
-  victory: "",
+  id: undefined,
+  name: undefined,
+  victory: undefined,
 });
 
 const choose = (player) => {
   if (winner.name !== player.name) {
+    winner.id = player.id;
     winner.name = player.name;
     winner.victory = player.victory;
   } else {
-    winner.name = "";
-    winner.victory = "";
+    winner.id = undefined;
+    winner.name = undefined;
+    winner.victory = undefined;
   }
 
   emit("winner", winner);

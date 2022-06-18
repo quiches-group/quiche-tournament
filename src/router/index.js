@@ -11,7 +11,7 @@ const router = createRouter({
       component: HomeView,
     },
     {
-      path: "/tournament",
+      path: "/tournament/:tournamentId",
       name: "tournament",
       component: VersusView,
     },

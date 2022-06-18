@@ -30,7 +30,7 @@ export const useTournaments = defineStore("tournaments", () => {
     return players.map((player, id) => {
       return {
         id,
-        name: player,
+        name: player.name,
       };
     });
   }
@@ -76,7 +76,7 @@ export const useTournaments = defineStore("tournaments", () => {
 
   function createBattle(tournamentId, roundId, battle) {
     return {
-      id: state.get(tournamentId).round(roundId).battles.length,
+      id: state.get(tournamentId).rounds[roundId].battles.length,
       players: battle,
       winner: null,
     };
@@ -90,11 +90,15 @@ export const useTournaments = defineStore("tournaments", () => {
       number: tournament.numberOfRounds - tournament.rounds.length,
       players: tournament.rounds.length === 0 ? tournament.players : [],
       battles: [],
-      battle(id) {
-        return round.battles[id];
+      actualBattleIndex: 0,
+      actualBattle() {
+        return ref(round.battles[this.actualBattleIndex]);
       },
       win(battleId, playerId) {
         // Set winner
+        console.log(playerId);
+        if (playerId === undefined) { return }
+
         round.battles[battleId].winner = playerId;
 
         // Get or create nextRound and if it's the semi create final
@@ -125,13 +129,11 @@ export const useTournaments = defineStore("tournaments", () => {
           }
         }
         if (round.number === 1) {
-          if (tournament.players.length > 2) {
-            tournament.podium.push(
-              round.battles[0].players.find(
-                (player) => player.id !== round.battles[0].winner
-              )
-            );
-          }
+          tournament.podium.push(
+            round.battles[0].players.find(
+              (player) => player.id !== round.battles[0].winner
+            )
+          );
           tournament.podium.push(
             round.battles[0].players.find(
               (player) => player.id === round.battles[0].winner
@@ -141,6 +143,11 @@ export const useTournaments = defineStore("tournaments", () => {
 
         // Check if all winner are set
         if (round.battles.every((battle) => battle.winner !== null)) {
+          if (round.number > 1) {
+            // Add one to the round
+            tournament.actualRoundIndex += 1;
+          }
+
           if (tournament.players.length === 3 && round.number === 2) {
             final.players.push(tournament.players[playerId]);
 
@@ -182,12 +189,13 @@ export const useTournaments = defineStore("tournaments", () => {
                 createBattle(tournamentId, nextRound.id, battle)
               );
             });
-          }
 
-          if (round.number > 1) {
-            // Add one to the round
-            tournament.actualRound += 1;
+            this.actualBattleIndex = 0;
           }
+        }
+
+        if (this.actualBattleIndex < this.battles.length - 1) {
+          this.actualBattleIndex += 1;
         }
       },
     };
@@ -202,11 +210,11 @@ export const useTournaments = defineStore("tournaments", () => {
       id: state.list.length,
       players: createPlayers(playerList.value),
       numberOfRounds: getNumberOfRounds(playerList.value),
-      actualRound: 0,
+      actualRoundIndex: 0,
       rounds: [],
       podium: [],
-      round(id) {
-        return tournament.rounds[id];
+      actualRound() {
+        return ref(tournament.rounds[this.actualRoundIndex]);
       },
     };
 

@@ -58,16 +58,16 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useTournaments } from "@/stores/tournaments.js";
 
-const tournament = useTournaments();
+const tournaments = useTournaments();
 const router = useRouter();
 const isGettingRandomName = ref(false);
 
 const playerList = computed(() => {
-  return tournament.playerList;
+  return tournaments.playerList;
 });
 
 const playersWereSetted = computed(() => {
@@ -82,9 +82,10 @@ const playersWereSetted = computed(() => {
 });
 
 function createTournament() {
-  tournament.create();
+  const tournament = tournaments.create();
   router.push({
     name: "tournament",
+    params: { tournamentId: tournament.id },
   });
 }
 

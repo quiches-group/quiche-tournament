@@ -19,7 +19,7 @@
           class="scoreboard"
         >
           <img
-            class="classementImg"
+            class="podiumImg"
             :src="getClassementLogo(imageLeaderboard[index].image)"
             alt=""
           />
@@ -85,6 +85,8 @@ const getClassementLogo = (path) => {
 };
 
 const routeToHome = () => {
+  tournaments.playerList = [];
+  tournaments.tournamentName = undefined;
   router.push({ name: "home" });
 };
 </script>
@@ -109,7 +111,7 @@ const routeToHome = () => {
   @apply w-full flex flex-row flex-wrap justify-between items-center p-3;
 }
 
-.classementImg {
+.podiumImg {
   @apply max-h-14;
 }
 

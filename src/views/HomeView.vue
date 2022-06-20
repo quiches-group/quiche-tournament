@@ -12,17 +12,8 @@
 </template>
 
 <script setup>
-import { useRouter } from "vue-router";
 import PlayerCreator from "../components/PlayersCreator.vue";
 import PlayerSelector from "../components/PlayersSelector.vue";
-
-const router = useRouter();
-
-function navigateToHistory() {
-  router.push({
-    name: "tournamentHistory",
-  });
-}
 </script>
 
 <style scoped>
@@ -41,9 +32,5 @@ function navigateToHistory() {
 
 .logo {
   @apply aspect-square w-3/12;
-}
-.faqBtn {
-  position: absolute !important;
-  @apply flex m-8;
 }
 </style>

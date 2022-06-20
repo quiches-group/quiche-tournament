@@ -1,6 +1,6 @@
 <template>
   <div class="centered">
-    <label class="text-xl text-white pb-2">Nom du tournois :</label>
+    <label class="text-xl text-white">Nom du tournois :</label>
     <q-input
       class="input text-lg font-bold"
       :class="{
@@ -53,7 +53,7 @@ const selectNumberOfPlayer = (numberOfPlayer) => {
 
 <style scoped>
 .centered {
-  @apply flex flex-col justify-center pt-10;
+  @apply flex flex-col justify-center pt-10 space-y-5;
 }
 
 .input {

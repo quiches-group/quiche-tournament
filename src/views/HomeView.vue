@@ -1,12 +1,10 @@
 <template>
-  <q-button @click="navigateToHistory"> Historique </q-button>
   <div class="tournamentCreator">
     <div class="side left">
       <img class="logo" src="../assets/vsLogo.png" alt="Versus logo" />
       <player-selector class="selector"></player-selector>
       <span></span>
     </div>
-    <q-button class="faqBtn" :default-positionning="false" @click="$router.push('faq')" >FAQ</q-button>
     <div class="right">
       <player-creator class="creator"></player-creator>
     </div>

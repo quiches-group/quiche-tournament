@@ -1,7 +1,7 @@
 <template>
   <div class="match">
     <div class="tournamentInfo">
-      <p class="tournamentStep">Quart de finale</p>
+      <p class="tournamentStep">{{ actualRound.name }}</p>
       <p class="roundStep">
         {{
           `${this.actualRound.actualBattleIndex + 1} / ${

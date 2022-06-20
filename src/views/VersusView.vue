@@ -83,6 +83,10 @@ function nextBattle() {
 
 function endTournament() {
   actualRound.value.win(actualBattle.value.id, winner.id);
+  router.push({
+    name: "leaderboard",
+    params: { tournamentId: actualTournament.value.id },
+  });
 }
 </script>
 

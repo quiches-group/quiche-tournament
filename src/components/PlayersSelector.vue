@@ -16,7 +16,7 @@ import { computed } from "vue";
 
 const tournament = useTournaments();
 
-const possibleNumberPlayer = ["2", "3", "4", "5", "6", "7", "8"];
+const possibleNumberPlayer = Array.from({length: 11}, (_, i) => i + 2);
 
 const playerList = computed(() => {
   return tournament.playerList;

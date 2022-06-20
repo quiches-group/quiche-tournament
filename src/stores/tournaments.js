@@ -152,11 +152,11 @@ export const useTournaments = defineStore("tournaments", () => {
               (player) => player.id === round.battles[0].winner
             )
           );
+          tournament.podium.reverse();
         }
         // endregion
 
         // region Set winners battle
-        // if (round.battles.every((battle) => battle.winner !== null)) { // Remove because the before if can be used to do the same
         if (round.number > 1) {
           // Add one to the round
           tournament.actualRoundIndex += 1;

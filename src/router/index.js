@@ -3,6 +3,7 @@ import HomeView from "../views/HomeView.vue";
 import VersusView from "../views/VersusView.vue";
 import FinalLeaderboardView from "../views/FinalLeaderboardView.vue";
 import FaqView from "../views/FaqView.vue";
+import NotFoundView from "../views/NotFoundView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,6 +28,7 @@ const router = createRouter({
       name: "faq",
       component: FaqView,
     },
+    { path: "/:pathMatch(.*)*", name: "NotFound", component: NotFoundView },
   ],
 });
 

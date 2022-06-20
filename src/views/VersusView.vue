@@ -38,11 +38,12 @@
 
 <script setup>
 import { computed, reactive, ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useTournaments } from "@/stores/tournaments.js";
 import RoundVersus from "../components/RoundVersus.vue";
 
 const route = useRoute();
+const router = useRouter();
 const tournament = useTournaments();
 const actualTournament = ref(tournament.get(route.params.tournamentId));
 const actualRound = computed(() => {

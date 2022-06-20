@@ -1,5 +1,5 @@
 <template>
-  <div class="myContainer">
+  <div class="tournamentCreator">
     <div class="side left">
       <img class="logo" src="../assets/vsLogo.png" alt="Versus logo">
       <player-selector class="selector"></player-selector>
@@ -17,13 +17,13 @@ import PlayerSelector from "../components/PlayersSelector.vue";
 </script>
 
 <style scoped>
-.myContainer {
+.tournamentCreator {
   @apply flex flex-col lg:flex-row min-h-screen w-screen p-5;
 }
 
 .left {
   @apply flex flex-1 w-full flex-col flex-wrap items-center
-  my-20 lg:justify-between justify-start;
+  my-20 lg:justify-start justify-start;
 }
 
 .right {
@@ -31,6 +31,6 @@ import PlayerSelector from "../components/PlayersSelector.vue";
 }
 
 .logo {
-  @apply aspect-square;
+  @apply aspect-square w-3/12;
 }
 </style>

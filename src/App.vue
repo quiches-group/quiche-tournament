@@ -18,7 +18,9 @@
         </q-menu>
       </q-navbar-content>
     </q-navbar>
-    <button class="navBarButton" @click="changeNavbarState()">Open navbar</button>
+    <q-button class="navBarButton" @click="changeNavbarState()">
+      Menu
+    </q-button>
     <RouterView />
   </div>
 </template>

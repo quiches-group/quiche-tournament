@@ -1,6 +1,6 @@
 <template>
   <div class="centered">
-    <label class="text-xl text-white">Nom du tournois :</label>
+    <label class="text-xl text-white">Nom du tournoi :</label>
     <q-input
       class="input text-lg font-bold"
       :class="{

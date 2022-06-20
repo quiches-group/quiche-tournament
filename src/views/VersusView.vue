@@ -71,7 +71,7 @@ function nextBattle() {
 }
 
 function endTournament() {
-  // actualRound.value.win(actualBattle.value.id, winner.id);
+  actualRound.value.win(actualBattle.value.id, winner.id);
 }
 </script>
 

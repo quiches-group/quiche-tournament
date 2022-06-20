@@ -2,6 +2,7 @@
   <div class="centered">
     <p class="text-xl text-white pb-2">Choisis le nombre de joueur :</p>
     <q-dropdown
+      class="dropdown"
       accentColor="red"
       placeholder="Nombre de joueur"
       :options="possibleNumberPlayer"
@@ -16,7 +17,7 @@ import { useTournaments } from "@/stores/tournaments.js";
 
 const tournament = useTournaments();
 
-const possibleNumberPlayer = Array.from({length: 11}, (_, i) => i + 2);
+const possibleNumberPlayer = Array.from({ length: 11 }, (_, i) => i + 2);
 
 const playerList = computed(() => {
   return tournament.playerList;
@@ -43,5 +44,8 @@ const selectNumberOfPlayer = (numberOfPlayer) => {
 <style scoped>
 .centered {
   @apply flex flex-col justify-center pt-10;
+}
+.dropdown {
+  @apply z-50;
 }
 </style>

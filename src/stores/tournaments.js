@@ -87,6 +87,7 @@ export const useTournaments = defineStore("tournaments", () => {
 
     const round = {
       id: tournament.rounds.length,
+      name: "",
       number: tournament.numberOfRounds - tournament.rounds.length,
       players: tournament.rounds.length === 0 ? tournament.players : [],
       battles: [],
@@ -199,6 +200,26 @@ export const useTournaments = defineStore("tournaments", () => {
         }
       },
     };
+
+    switch (round.number) {
+      case 1:
+        round.name = "Finale";
+        break;
+      case 2:
+        round.name = "Troisième place";
+        break;
+      case 3:
+        round.name = "Demi-finale";
+        break;
+      case 4:
+        round.name = "Quart de finale";
+        break;
+      case 5:
+        round.name = "Huitième de finale";
+        break;
+      default:
+        round.name = "";
+    }
 
     state.get(tournamentId).rounds.push(round);
     return round;

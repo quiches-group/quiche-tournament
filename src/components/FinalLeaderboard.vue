@@ -86,7 +86,6 @@ const getClassementLogo = (path) => {
 
 const routeToHome = () => {
   tournaments.playerList = [];
-  tournaments.tournamentName = undefined;
   router.push({ name: "home" });
 };
 </script>

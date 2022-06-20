@@ -1,31 +1,33 @@
 <template>
-  <div v-if="allTournaments === []">
-    <h3>Aucun tournois a été joué pour le moment.</h3>
+  <div v-if="allTournaments === undefined" class="noTournament">
+    <h3>Aucun tournoi n'a été joué pour le moment.</h3>
   </div>
   <swiper
-      class="swiper"
-      v-else-if="allTournaments !== []"
-      :slides-per-view="1"
-      :space-between="50"
-      @swiper="onSwiper"
-      @slideChange="onSlideChange"
+    class="swiper"
+    v-else-if="allTournaments !== undefined"
+    :slides-per-view="1"
+    :space-between="50"
+    @swiper="onSwiper"
+    @slideChange="onSlideChange"
   >
     <swiper-slide v-for="tournament in allTournaments" :key="tournament.id">
       <q-card class="tournamentCard">
-        <q-card-title class="title">Tournois numéro : {{ tournament.id + 1 }}</q-card-title>
+        <q-card-title class="title"
+          >Tournois numéro : {{ tournament.id + 1 }}</q-card-title
+        >
         <q-card-title class="title">{{ tournament.name }}</q-card-title>
         <q-card-content>
           <div class="container">
             <div class="leaderboard">
               <div
-                  v-for="(player, index) in tournament.podium"
-                  :key="player.id"
-                  class="scoreboard"
+                v-for="(player, index) in tournament.podium"
+                :key="player.id"
+                class="scoreboard"
               >
                 <img
-                    class="podiumImg"
-                    :src="getClassementLogo(imageLeaderboard[index].image)"
-                    alt=""
+                  class="podiumImg"
+                  :src="getClassementLogo(imageLeaderboard[index].image)"
+                  alt=""
                 />
                 <div class="player">{{ player.name }}</div>
                 <q-separator class="separator"></q-separator>
@@ -62,12 +64,8 @@ const getClassementLogo = (path) => {
   return new URL(path, import.meta.url).href;
 };
 
-const onSwiper = (swiper) => {
-  console.log(swiper);
-};
-const onSlideChange = () => {
-  console.log("slide change");
-};
+const onSwiper = () => {};
+const onSlideChange = () => {};
 </script>
 
 <style scoped>
@@ -77,13 +75,17 @@ const onSlideChange = () => {
   bg-opacity-20;
 }
 
+.noTournament {
+  @apply flex flex-row justify-center;
+}
+
 .title {
   @apply self-center
   pt-5;
 }
 
 .container {
-  @apply self-center
+  @apply self-center;
 }
 
 .leaderboard {

@@ -23,11 +23,11 @@ const router = createRouter({
       name: "leaderboard",
       component: FinalLeaderboardView,
     },
-	{
-	  path: "/history",
+    {
+      path: "/history",
       name: "tournamentHistory",
       component: TournamentHistoryView,
-	},
+    },
     {
       path: "/faq",
       name: "faq",

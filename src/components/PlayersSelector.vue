@@ -45,7 +45,4 @@ const selectNumberOfPlayer = (numberOfPlayer) => {
 .centered {
   @apply flex flex-col justify-center pt-10;
 }
-.dropdown {
-  @apply z-50;
-}
 </style>

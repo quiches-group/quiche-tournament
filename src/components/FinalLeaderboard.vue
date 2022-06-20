@@ -48,7 +48,9 @@
         </q-card>
       </div>
       <div class="endButton">
-        <q-button class="homeButton" @click="routeToHome">Home</q-button>
+        <q-button class="homeButton" @click="routeToHome"
+          >Retour à l'accueil</q-button
+        >
       </div>
     </div>
   </div>
@@ -133,10 +135,12 @@ const routeToHome = () => {
   @apply max-h-14 w-auto;
 }
 .endButton {
-  @apply mt-20
+  @apply mt-20 w-5/6
+    md:w-9/12
   lg:w-full lg:flex lg:items-center;
 }
 .homeButton {
-  @apply lg:flex-1 lg:mx-auto lg:max-w-xs;
+  @apply w-full
+  lg:flex-1 lg:mx-auto lg:max-w-xs;
 }
 </style>

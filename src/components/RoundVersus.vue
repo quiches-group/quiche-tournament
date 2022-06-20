@@ -9,7 +9,6 @@
       @click="choose(props.players[0])"
     >
       <q-card-title>{{ props.players[0].name }}</q-card-title>
-      <q-card-content>{{ props.players[0].victory }}</q-card-content>
       <span></span>
     </q-card>
 
@@ -24,7 +23,6 @@
       @click="choose(props.players[1])"
     >
       <q-card-title>{{ props.players[1].name }}</q-card-title>
-      <q-card-content>{{ props.players[1].victory }}</q-card-content>
       <span></span>
     </q-card>
   </div>
@@ -65,35 +63,22 @@ const choose = (player) => {
 
 <style scoped>
 .round {
-  @apply flex flex-row flex-wrap justify-around items-center;
+  @apply flex flex-col xl:flex-row flex-wrap justify-around items-center space-y-10;
 }
 .playerCard {
-  @apply flex flex-col justify-around items-center
+  @apply flex flex-col justify-center items-center
   transform hover:scale-110 transition
   hover:shadow-2xl
   transform hover:border-2 border-green-500 border-solid
-  bg-opacity-20;
+  bg-opacity-20
+  w-4/6 sm:w-2/6;
 }
 
 .playerCard {
   height: 10vh;
-  margin: 20px;
 }
 
 .logo {
   @apply aspect-square w-3/12;
-}
-
-@media (min-width: 1024px) {
-  .playerCard {
-    height: 20vh;
-    @apply transform hover:scale-125 transition;
-  }
-}
-
-@media (min-width: 1280px) {
-  .playerCard {
-    height: 20vh;
-  }
 }
 </style>

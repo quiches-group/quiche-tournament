@@ -9,7 +9,7 @@
       </div>
     </div>
     <div
-      class="container"
+      class="result"
       v-if="actualTournament !== undefined && playerRanked.length > 0"
     >
       <div class="leaderboard">
@@ -94,7 +94,7 @@ const routeToHome = () => {
   @apply absolute font-bold text-4xl left-1/2 -translate-x-1/2 mb-6;
 }
 
-.container {
+.result {
   @apply flex flex-col pt-6 justify-around items-center w-full
   md:px-8
   lg:p-20 lg:w-full lg:flex-row lg:flex-wrap;

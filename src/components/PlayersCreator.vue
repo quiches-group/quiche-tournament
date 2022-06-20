@@ -1,6 +1,6 @@
 <template>
   <div>
-    <q-row class="row" justify="space-around">
+    <q-row class="row" justify="center">
       <q-col
         class="col"
         :cols="12"
@@ -125,37 +125,26 @@ async function getUsers() {
 }
 
 .fields-group {
-  display: flex;
-  flex-direction: column;
+  @apply flex flex-col;
 }
 
 .fields-group label {
-  order: 1;
+  @apply order-1;
 }
 
 .fields-group .input {
-  order: 2;
+  @apply order-2;
 }
 
 .row {
-  margin: 0;
+  @apply m-0
+  lg:max-w-2xl
+  xl:max-w-3xl;
 }
 
 .col {
   @apply py-3
   lg:px-3
   sm:px-2;
-}
-
-@media (min-width: 1024px) {
-  .row {
-    max-width: 55vw;
-  }
-}
-
-@media (min-width: 1280px) {
-  .row {
-    max-width: 45vw;
-  }
 }
 </style>

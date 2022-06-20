@@ -17,7 +17,7 @@ const router = createRouter({
       component: VersusView,
 	}, 
 	{
-      path: "/leaderboard",
+      path: "/leaderboard/:tournamentId",
       name: "leaderboard",
       component: FinalLeaderboard,
     },

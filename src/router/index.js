@@ -21,7 +21,8 @@ const router = createRouter({
       path: "/leaderboard/:tournamentId",
       name: "leaderboard",
       component: FinalLeaderboardView,
-}, {
+    },
+    {
       path: "/faq",
       name: "faq",
       component: FaqView,

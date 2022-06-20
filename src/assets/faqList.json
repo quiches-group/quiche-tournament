@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "name": "#1 - How it's work ?",
+    "content": "First, you can specify the number of the participant. After selecting your participant, you can write the name of the participant. Finally launch the tournament"
+  },
+  {
+    "id": 2,
+    "name": "#2 - How many people we can add ?",
+    "content": "Actually the system work for 8 people max and 2 people minimum"
+  },
+  {
+    "id": 3,
+    "name": "#3 - Random Name",
+    "content": "You can click on the random name button to generate randomly a name for each participant"
+  },
+  {
+    "id": 4,
+    "name": "#4 - Find tournament",
+    "content": "To find a tournament, click on the search input and write the ID of the tournament"
+  },
+  {
+    "id": 5,
+    "name": "#5 - Fifth question",
+    "content": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+  },
+  {
+    "id": 6,
+    "name": "#6 - Sixth question",
+    "content": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+  }
+]

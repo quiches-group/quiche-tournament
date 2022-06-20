@@ -3,6 +3,7 @@
     <div class="tournamentInfo">
       <p class="tournamentStep">{{ actualRound.name }}</p>
       <p class="roundStep">
+        Match :
         {{
           `${this.actualRound.actualBattleIndex + 1} / ${
             this.actualRound.battles.length
@@ -37,13 +38,13 @@
 </template>
 
 <script setup>
-import { computed, reactive, ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { ref, reactive, computed } from "vue";
+import { useRouter, useRoute } from "vue-router";
 import { useTournaments } from "@/stores/tournaments.js";
 import RoundVersus from "../components/RoundVersus.vue";
 
-const route = useRoute();
 const router = useRouter();
+const route = useRoute();
 const tournament = useTournaments();
 const actualTournament = ref(tournament.get(route.params.tournamentId));
 const actualRound = computed(() => {

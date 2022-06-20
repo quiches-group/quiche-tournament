@@ -25,6 +25,8 @@ export const useTournaments = defineStore("tournaments", () => {
 
   /* Tournament */
 
+  const tournamentName = ref("");
+
   // region Tournament
   function createPlayers(players) {
     return players.map((player, id) => {
@@ -242,6 +244,7 @@ export const useTournaments = defineStore("tournaments", () => {
     if (!playerList.value) throw new Error("We need a list of players");
     const tournament = {
       id: state.list.length,
+      name: tournamentName,
       players: createPlayers(playerList.value),
       numberOfRounds: getNumberOfRounds(playerList.value),
       actualRoundIndex: 0,
@@ -278,6 +281,7 @@ export const useTournaments = defineStore("tournaments", () => {
     playerList,
     addNewPlayer,
     popPlayer,
+    tournamentName,
     list,
     get,
     create,

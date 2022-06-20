@@ -3,7 +3,6 @@ import { ref, reactive } from "vue";
 
 export const useTournaments = defineStore("tournaments", () => {
   /* State */
-
   const state = reactive({
     list: [],
     get(id) {
@@ -88,6 +87,7 @@ export const useTournaments = defineStore("tournaments", () => {
     const round = {
       id: tournament.rounds.length,
       number: tournament.numberOfRounds - tournament.rounds.length,
+      name: "",
       players: tournament.rounds.length === 0 ? tournament.players : [],
       battles: [],
       actualBattleIndex: 0,
@@ -199,6 +199,24 @@ export const useTournaments = defineStore("tournaments", () => {
         }
       },
     };
+
+    switch (round.number) {
+      case 1:
+        round.name = "Finale";
+        break;
+      case 2:
+        round.name = "Troisième place";
+        break;
+      case 3:
+        round.name = "Demi-finale";
+        break;
+      case 4:
+        round.name = "Quart de finale";
+        break;
+      case 5:
+        round.name = "Huitième de finale";
+        break;
+    }
 
     state.get(tournamentId).rounds.push(round);
     return round;

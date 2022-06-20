@@ -1,9 +1,25 @@
 <template>
   <div>
     <div class="title">
-      <h1>Final Leaderboard</h1>
+      <div
+        v-if="
+          actualTournament !== undefined &&
+          actualTournament.value.podium.length > 0
+        "
+      >
+        <h1>Final Leaderboard</h1>
+      </div>
+      <div v-else>
+        <h1>You haven't finish a tournament.</h1>
+      </div>
     </div>
-    <div class="container">
+    <div
+      class="container"
+      v-if="
+        actualTournament !== undefined &&
+        actualTournament.value.podium.length > 0
+      "
+    >
       <div class="leaderboard">
         <div
           v-for="(player, index) in playerRanked"
@@ -47,17 +63,18 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
-import { useRouter } from "vue-router";
+import { computed, ref } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { useTournaments } from "@/stores/tournaments.js";
+
+const route = useRoute();
+const tournaments = useTournaments();
+
+const actualTournament = ref(tournaments.get(route.params.tournamentId));
 
 const router = useRouter();
 const playerRanked = computed(() => {
-  return [
-    { id: 1, name: "Player 1" },
-    { id: 2, name: "Player2" },
-    { id: 3, name: "Player3" },
-    { id: 4, name: "Player4" },
-  ];
+  return actualTournament.value.podium;
 });
 
 const imageLeaderboard = computed(() => {

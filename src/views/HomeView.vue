@@ -23,7 +23,7 @@ import PlayerSelector from "../components/PlayersSelector.vue";
 
 .left {
   @apply flex flex-1 w-full flex-col flex-wrap items-center
-  my-20 lg:justify-between justify-start;
+  my-20 lg:justify-start justify-start;
 }
 
 .right {
@@ -31,6 +31,6 @@ import PlayerSelector from "../components/PlayersSelector.vue";
 }
 
 .logo {
-  @apply aspect-square;
+  @apply aspect-square w-3/12;
 }
 </style>

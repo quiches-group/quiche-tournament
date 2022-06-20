@@ -81,7 +81,7 @@ const choose = (player) => {
 }
 
 .logo {
-  @apply aspect-square;
+  @apply aspect-square w-3/12;
 }
 
 @media (min-width: 1024px) {

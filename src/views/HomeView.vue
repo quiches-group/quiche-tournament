@@ -18,7 +18,7 @@ import PlayerSelector from "../components/PlayersSelector.vue";
 
 <style scoped>
 .tournamentCreator {
-  @apply flex flex-col lg:flex-row min-h-screen w-screen p-5;
+  @apply flex flex-col lg:flex-row;
 }
 
 .left {

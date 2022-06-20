@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="btn-container">
-      <q-button class="faq-btn" :default-positionning="false" @click="$router.back()">{{btnText}}</q-button>
+      <q-button class="faq-btn" :default-positionning="false" @click="$router.back()">Accueil</q-button>
     </div>
     <div class="content" v-for="item in dataFaq.data" :key="item.name">
       <h1 class="title">{{ item.name }}</h1>
@@ -14,7 +14,6 @@
 import { reactive} from "vue";
 import faqList from "../assets/faqList.json";
 
-const btnText = "Return";
 
 const dataFaq = reactive({
   data: faqList,

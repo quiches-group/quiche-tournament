@@ -25,10 +25,9 @@
     <div
       class="centered"
       :class="{
-        'opacity-0': !winner.name,
-        'pointer-events-none': !winner.name
+        'opacity-0': !isMatchEnd,
+        'pointer-events-none': !isMatchEnd
       }"
-      v-if="!isTournamentEnd"
     >
       <q-button variant="plain-rounded" size="large" @click="nextBattle">
         Match suivant
@@ -56,11 +55,11 @@ const players = computed(() => {
   return actualBattle.value.players;
 });
 const isTournamentEnd = computed(() => {
-  return (
-    actualTournament.value.podium.length ===
-      actualTournament.value.players.length ||
-    actualTournament.value.podium.length === 4
-  );
+  return actualRound.value.name === "Finale" && winner.name;
+});
+
+const isMatchEnd = computed(() => {
+  return actualRound.value.name !== "Finale" && winner.name;
 });
 const winner = reactive({
   id: undefined,

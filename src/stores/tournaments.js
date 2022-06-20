@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref, reactive } from "vue";
+import { reactive, ref } from "vue";
 
 export const useTournaments = defineStore("tournaments", () => {
   /* State */
@@ -97,12 +97,11 @@ export const useTournaments = defineStore("tournaments", () => {
       },
       win(battleId, playerId) {
         // Set winner
-        console.log(playerId);
-        if (playerId === undefined) { return }
+        if (playerId === undefined) return;
 
         round.battles[battleId].winner = playerId;
 
-        // Get or create nextRound and if it's the semi create final
+        // region Get or create round
         let nextRound;
         let final;
         if (tournament.players.length === 3 && round.number === 2) {
@@ -118,7 +117,20 @@ export const useTournaments = defineStore("tournaments", () => {
           final =
             tournament.rounds[nextRound.id + 1] ?? createRound(tournamentId);
         }
+        // endregion
 
+        // region Move to nextBattle if there is one
+        if (this.actualBattleIndex < this.battles.length - 1) {
+          this.actualBattleIndex += 1;
+          return;
+        }
+        // endregion
+
+        // region Set podium in the two last round (there is only one battle in each)
+        // region Set podium
+        if (tournament.podium.includes(tournament.players[playerId])) {
+          return;
+        }
         if (round.number === 2) {
           tournament.podium.push(
             round.battles[0].players.find(
@@ -141,63 +153,64 @@ export const useTournaments = defineStore("tournaments", () => {
             )
           );
         }
+        // endregion
 
-        // Check if all winner are set
-        if (round.battles.every((battle) => battle.winner !== null)) {
-          if (round.number > 1) {
-            // Add one to the round
-            tournament.actualRoundIndex += 1;
+        // region Set winners battle
+        // if (round.battles.every((battle) => battle.winner !== null)) { // Remove because the before if can be used to do the same
+        if (round.number > 1) {
+          // Add one to the round
+          tournament.actualRoundIndex += 1;
+        }
+
+        if (tournament.players.length === 3 && round.number === 2) {
+          final.players.push(tournament.players[playerId]);
+
+          final.battles.push(
+            createBattle(tournamentId, final.id, final.players)
+          );
+          return;
+        }
+        if (round.number === 3) {
+          const winners = round.battles.map(
+            (battle) => tournament.players[battle.winner]
+          );
+          const losers = round.battles.map((battle) =>
+            battle.players.find((player) => player.id !== battle.winner)
+          );
+
+          nextRound.players = losers;
+          // Create and push each battles in the next round
+          nextRound.battles.push(
+            createBattle(tournamentId, nextRound.id, losers)
+          );
+          final.players = winners;
+          final.battles.push(createBattle(tournamentId, final.id, winners));
+          return;
+        }
+        if (round.number > 2) {
+          // Start a matchmaking between players
+          const { battles, playersTmp } = matchmaking(nextRound.players);
+
+          // If playersTmp is not empty
+          if (playersTmp.length > 0) {
+            // Send playersTmp in the second next round
+            const secondNextRound =
+              tournament.rounds[nextRound.id + 1] ?? createRound(tournamentId);
+            // Add playersTmp to second next run
+            secondNextRound.players.push(...playersTmp);
           }
 
-          if (tournament.players.length === 3 && round.number === 2) {
-            final.players.push(tournament.players[playerId]);
-
-            final.battles.push(
-              createBattle(tournamentId, final.id, final.players)
-            );
-          } else if (round.number === 3) {
-            const winners = round.battles.map(
-              (battle) => tournament.players[battle.winner]
-            );
-            const losers = round.battles.map((battle) =>
-              battle.players.find((player) => player.id !== battle.winner)
-            );
-
-            nextRound.players = losers;
-            // Create and push each battles in the next round
+          // Create and push each battles in the next round
+          battles.forEach((battle) => {
             nextRound.battles.push(
-              createBattle(tournamentId, nextRound.id, losers)
+              createBattle(tournamentId, nextRound.id, battle)
             );
-            final.players = winners;
-            final.battles.push(createBattle(tournamentId, final.id, winners));
-          } else if (round.number > 2) {
-            // Start a matchmaking between players
-            const { battles, playersTmp } = matchmaking(nextRound.players);
+          });
 
-            // If playersTmp is not empty
-            if (playersTmp.length > 0) {
-              // Send playersTmp in the second next round
-              const secondNextRound =
-                tournament.rounds[nextRound.id + 1] ??
-                createRound(tournamentId);
-              // Add playersTmp to second next run
-              secondNextRound.players.push(...playersTmp);
-            }
-
-            // Create and push each battles in the next round
-            battles.forEach((battle) => {
-              nextRound.battles.push(
-                createBattle(tournamentId, nextRound.id, battle)
-              );
-            });
-
-            this.actualBattleIndex = 0;
-          }
+          this.actualBattleIndex = 0;
         }
-
-        if (this.actualBattleIndex < this.battles.length - 1) {
-          this.actualBattleIndex += 1;
-        }
+        // endregion
+        // endregion
       },
     };
 

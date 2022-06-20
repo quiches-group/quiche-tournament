@@ -11,14 +11,26 @@
       </p>
     </div>
     <roundVersus :players="players" @winner="setWinner"></roundVersus>
-    <div v-if="isTournamentEnd" class="centered">
-      <q-button size="large" variant="plain-rounded" @click="endTournament">
+    <div
+      class="centered"
+      :class="{
+        'opacity-0': !isTournamentEnd,
+        'pointer-events-none': !isTournamentEnd
+      }"
+    >
+      <q-button variant="plain-rounded" size="large" @click="endTournament">
         Terminer
       </q-button>
-      {{ winner.name }}
     </div>
-    <div v-else-if="winner.name" class="centered">
-      <q-button size="large" variant="plain-rounded" @click="nextBattle">
+    <div
+      class="centered"
+      :class="{
+        'opacity-0': !winner.name,
+        'pointer-events-none': !winner.name
+      }"
+      v-if="!isTournamentEnd"
+    >
+      <q-button variant="plain-rounded" size="large" @click="nextBattle">
         Match suivant
       </q-button>
     </div>
@@ -64,9 +76,9 @@ const setWinner = (newWinner) => {
 function nextBattle() {
   actualRound.value.win(actualBattle.value.id, winner.id);
   setWinner({
-    id: "",
-    name: "",
-    victory: "",
+    id: undefined,
+    name: undefined,
+    victory: undefined,
   });
 }
 
@@ -86,7 +98,6 @@ function endTournament() {
 
 .tournamentStep {
   @apply text-center text-white text-3xl font-semibold
-  underline underline-offset-2 decoration-quiche-purple/50 decoration-4
   md:text-5xl;
 }
 
@@ -96,6 +107,6 @@ function endTournament() {
 }
 
 .centered {
-  @apply flex justify-center;
+  @apply flex flex-none justify-center pt-3;
 }
 </style>

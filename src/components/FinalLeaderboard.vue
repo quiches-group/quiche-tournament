@@ -7,10 +7,10 @@
           actualTournament.value.podium.length > 0
         "
       >
-        <h1>Final Leaderboard</h1>
+        <h1>Classement final</h1>
       </div>
       <div v-else>
-        <h1>You haven't finish a tournament.</h1>
+        <h1>Votre tournoi n'est pas fini.</h1>
       </div>
     </div>
     <div
@@ -91,7 +91,7 @@ const getClassementLogo = (path) => {
 };
 
 const routeToHome = () => {
-  router.push("/");
+  router.push({ name: "home" });
 };
 </script>
 

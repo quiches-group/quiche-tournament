@@ -1,12 +1,7 @@
 <template>
   <div>
     <div class="title">
-      <div
-        v-if="
-          actualTournament !== undefined &&
-          actualTournament.value.podium.length > 0
-        "
-      >
+      <div v-if="actualTournament !== undefined && playerRanked.length > 0">
         <h1>Classement final</h1>
       </div>
       <div v-else>
@@ -15,10 +10,7 @@
     </div>
     <div
       class="container"
-      v-if="
-        actualTournament !== undefined &&
-        actualTournament.value.podium.length > 0
-      "
+      v-if="actualTournament !== undefined && playerRanked.length > 0"
     >
       <div class="leaderboard">
         <div
@@ -112,7 +104,7 @@ const routeToHome = () => {
 }
 
 .scoreboard {
-  @apply w-full flex flex-row flex-wrap justify-evenly items-center p-3;
+  @apply w-full flex flex-row flex-wrap justify-between items-center p-3;
 }
 
 .classementImg {

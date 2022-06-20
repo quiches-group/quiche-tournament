@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import VersusView from "../views/VersusView.vue";
-import FinalLeaderboard from "../components/FinalLeaderboard.vue";
+import FinalLeaderboardView from "../views/FinalLeaderboardView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,7 +19,7 @@ const router = createRouter({
     {
       path: "/leaderboard/:tournamentId",
       name: "leaderboard",
-      component: FinalLeaderboard,
+      component: FinalLeaderboardView,
     },
   ],
 });

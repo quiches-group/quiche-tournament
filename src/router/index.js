@@ -3,6 +3,7 @@ import HomeView from "../views/HomeView.vue";
 import VersusView from "../views/VersusView.vue";
 import FinalLeaderboardView from "../views/FinalLeaderboardView.vue";
 import FaqView from "../views/FaqView.vue";
+import AddUserAPI from "../views/addingUserHugo.vue";
 import NotFoundView from "../views/NotFoundView.vue";
 
 const router = createRouter({
@@ -27,6 +28,11 @@ const router = createRouter({
       path: "/faq",
       name: "faq",
       component: FaqView,
+    },
+    {
+      path: "/addinguser",
+      name: "adduser",
+      component: AddUserAPI,
     },
     { path: "/:pathMatch(.*)*", name: "NotFound", component: NotFoundView },
   ],

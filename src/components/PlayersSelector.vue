@@ -8,11 +8,14 @@
       :options="possibleNumberPlayer"
       @select="selectNumberOfPlayer"
     ></q-dropdown>
+
+    <q-button @click="sendInformations">Envoyer Json</q-button>
   </div>
 </template>
 
 <script setup>
 import { computed } from "vue";
+import axios from "axios";
 import { useTournaments } from "@/stores/tournaments.js";
 
 const tournament = useTournaments();
@@ -39,6 +42,21 @@ const selectNumberOfPlayer = (numberOfPlayer) => {
     }
   }
 };
+
+function sendInformations() {
+  axios
+    .post(`https://4078-92-103-197-34.eu.ngrok.io/users`, {
+      body: {
+        firstname: "Nicolas2",
+        lastname: "Barbosa2",
+        framework: "Vue / Axios",
+      },
+    })
+    .then((response) => {})
+    .catch((e) => {
+      this.errors.push(e);
+    });
+}
 </script>
 
 <style scoped>
